@@ -46,16 +46,35 @@ if($_POST){
         return;
     }
 
-    echo json_encode(array(
-        'error' => false,
-        'campo' => 'exito'
+    // cuerpo del mensaje
+    $cuerpo = 'Usuario: ' . $usuario . "<br>";
+    $cuerpo.= 'Email: ' . $correo . "<br>";
+    $cuerpo.= 'Mensaje: ' . $mensaje . "<br>";
+
+    // DIRECCIÓN
+    $destinatario = 'info@portearanitas.com';
+    $asunto = 'Mensaje de mi sitio web';
+    $headers  = 'MIME-Version: 1.0' . "\r\n" .'Content-type: text/html; charset=utf-8' . "\r\n" .'From: ' . $correo . "\r\n";
+
+    if(mail($destinatario, $asunto, $cuerpo, $headers)){
+        echo json_encode(array(
+            'error' => false,
+            'campo' => 'exito'
         ));
+
+    } else {
+        echo json_encode(array(
+        'error' => true,
+        'campo' => 'mail'
+        ));
+    }
 
 } else {
     echo json_encode(array(
         'error' => true,
         'campo' => 'post'
     ));
+    return;
 }
 // echo json_encode($correo);
 
